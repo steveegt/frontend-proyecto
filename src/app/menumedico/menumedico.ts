@@ -13,7 +13,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MenumedicoComponent implements OnInit {
 
-  // ✅ URL BACKEND
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   nombreUsuario: string = '';
@@ -26,28 +25,42 @@ export class MenumedicoComponent implements OnInit {
 
     const token: any = localStorage.getItem('token');
 
-    if (token) {
-      const decoded: any = jwtDecode(token);
-
-      this.nombreUsuario = decoded.sub;
-
-      this.http.get<any>(
-        `${this.API}/api/medico/mi-perfil`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      .subscribe({
-        next: (res) => {
-          this.medico = res;
-        },
-        error: (err) => {
-          console.error('Error al obtener perfil médico', err);
-        }
-      });
+    if (!token) {
+      this.router.navigate(['/']);
+      return;
     }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      this.nombreUsuario = decoded.sub;
+    } catch (e) {
+      console.error('❌ Error con token');
+      this.logout();
+      return;
+    }
+
+    this.http.get<any>(
+      `${this.API}/api/medico/mi-perfil`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    .subscribe({
+      next: (res) => {
+        this.medico = res;
+      },
+      error: (err) => {
+        console.error('Error al obtener perfil médico', err);
+      }
+    });
+  }
+
+  // ✅ 🔥 MÉTODO CLAVE (NAVEGACIÓN)
+  irACitas() {
+    console.log("✅ NAVEGANDO A CITAS");
+    this.router.navigate(['/citas-medico']);
   }
 
   abrirPerfil() {
