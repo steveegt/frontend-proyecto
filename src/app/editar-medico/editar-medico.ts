@@ -47,7 +47,6 @@ export class EditarMedicoComponent {
     private dialog: MatDialog
   ) {}
 
-  // ✅ 🔥 CLAVE GLOBAL (TOKEN)
   getHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -71,7 +70,7 @@ export class EditarMedicoComponent {
   buscar() {
     this.http.get<any[]>(
       `${this.API}/api/medico/buscar?nombre=${this.nombreBusqueda}`,
-      { headers: this.getHeaders() } // ✅ FIX
+      { headers: this.getHeaders() }
     ).subscribe(data => {
 
       setTimeout(() => {
@@ -82,18 +81,21 @@ export class EditarMedicoComponent {
     });
   }
 
-  // ✅ SELECCIONAR
+  // ✅ SELECCIONAR (CORREGIDO)
   seleccionar(m: any) {
     this.medicoSeleccionado = { ...m };
 
     this.http.get<any>(
       `${this.API}/api/usuarios/por-medico/${m.medicoId}`,
-      { headers: this.getHeaders() } // ✅ FIX
+      { headers: this.getHeaders() }
     )
     .subscribe({
       next: (user) => {
         this.medicoSeleccionado.username = user.username;
-        this.medicoSeleccionado.password = user.password;
+
+        // ❌ ELIMINADO → NO TRAER PASSWORD ENCRIPTADA
+        // this.medicoSeleccionado.password = user.password;
+
         this.medicoSeleccionado.usuarioId = user.id;
 
         this.cdr.detectChanges();
@@ -104,23 +106,30 @@ export class EditarMedicoComponent {
     });
   }
 
-  // ✅ GUARDAR
+  // ✅ GUARDAR (CORREGIDO)
   guardar() {
 
     this.http.put(
       `${this.API}/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
       this.medicoSeleccionado,
-      { headers: this.getHeaders() } // ✅ FIX
+      { headers: this.getHeaders() }
     ).subscribe();
 
     if (this.medicoSeleccionado.usuarioId) {
+
+      const data: any = {
+        username: this.medicoSeleccionado.username
+      };
+
+      // ✅ SOLO enviar password si el usuario escribe uno nuevo
+      if (this.medicoSeleccionado.password && this.medicoSeleccionado.password.trim() !== '') {
+        data.password = this.medicoSeleccionado.password;
+      }
+
       this.http.put(
         `${this.API}/api/usuarios/actualizar/${this.medicoSeleccionado.usuarioId}`,
-        {
-          username: this.medicoSeleccionado.username,
-          password: this.medicoSeleccionado.password
-        },
-        { headers: this.getHeaders() } // ✅ FIX
+        data,
+        { headers: this.getHeaders() }
       ).subscribe(() => {
 
         this.mostrar('Médico actualizado');
@@ -148,7 +157,7 @@ export class EditarMedicoComponent {
 
         this.http.delete(
           `${this.API}/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`,
-          { headers: this.getHeaders() } // ✅ FIX
+          { headers: this.getHeaders() }
         ).subscribe(() => {
 
           this.mostrar('Médico eliminado correctamente');
