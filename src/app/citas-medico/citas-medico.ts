@@ -40,7 +40,6 @@ export class CitasMedicoComponent implements OnInit {
 
     const token = localStorage.getItem('token');
 
-    // ✅ VALIDAR QUE EXISTE TOKEN
     if (!token) {
       this.mostrarMensaje('Sesión expirada');
       this.router.navigate(['/']);
@@ -51,13 +50,8 @@ export class CitasMedicoComponent implements OnInit {
     this.obtenerAgendadas();
   }
 
-  // ✅ HEADERS CON TOKEN
   getHeaders() {
     const token = localStorage.getItem('token');
-
-    if (!token) {
-      this.router.navigate(['/']);
-    }
 
     return {
       Authorization: `Bearer ${token}`
@@ -83,9 +77,10 @@ export class CitasMedicoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error citas:', err);
+        console.error('❌ Error citas:', err);
 
-        if (err.status === 401 || err.status === 403) {
+        // 🔥 SOLO cerrar sesión si el token es inválido
+        if (err.status === 401) {
           this.cerrarSesion();
         } else {
           this.mostrarMensaje('❌ Error cargando citas');
@@ -105,9 +100,9 @@ export class CitasMedicoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error agendadas:', err);
+        console.error('❌ Error agendadas:', err);
 
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401) {
           this.cerrarSesion();
         } else {
           this.mostrarMensaje('❌ Error cargando agendadas');
@@ -128,9 +123,9 @@ export class CitasMedicoComponent implements OnInit {
         this.mostrarMensaje('✅ Cita aceptada');
       },
       error: (err) => {
-        console.error('Error aceptar:', err);
+        console.error('❌ Error aceptar:', err);
 
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401) {
           this.cerrarSesion();
         } else {
           this.mostrarMensaje('❌ Error al aceptar');
@@ -151,9 +146,9 @@ export class CitasMedicoComponent implements OnInit {
         this.mostrarMensaje('❌ Cita rechazada');
       },
       error: (err) => {
-        console.error('Error rechazar:', err);
+        console.error('❌ Error rechazar:', err);
 
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401) {
           this.cerrarSesion();
         } else {
           this.mostrarMensaje('❌ Error al rechazar');
@@ -162,7 +157,7 @@ export class CitasMedicoComponent implements OnInit {
     });
   }
 
-  // ✅ CERRAR SESIÓN AUTOMÁTICO
+  // ✅ CERRAR SESIÓN
   cerrarSesion() {
     this.mostrarMensaje('Sesión expirada');
     localStorage.clear();
