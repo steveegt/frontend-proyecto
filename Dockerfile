@@ -6,7 +6,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-# ✅ copiar TODO lo que haya en dist
-COPY --from=build /app/dist/ /usr/share/nginx/html/
+# 🔥 ESTA LÍNEA ES LA BUENA
+COPY --from=build /app/dist/*/browser /usr/share/nginx/html
 
 EXPOSE 80
