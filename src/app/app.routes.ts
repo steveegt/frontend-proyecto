@@ -29,6 +29,12 @@ export const routes: Routes = [
   data: { role: 'ADMIN' }
 },
 {
+  path: 'registrar-paciente',
+  component: RegistrarPacienteComponent,
+  canActivate: [AuthGuard],
+  data: { role: 'ADMIN' }
+},
+{
   path: 'registrar-medico',
   component: RegistrarMedicoComponent,
   canActivate: [AuthGuard],
@@ -54,12 +60,7 @@ export const routes: Routes = [
   canActivate: [AuthGuard],
   data: { role: 'ADMIN' }
 },
-{
-  path: 'menumedico',
-  component: MenumedicoComponent,
-  canActivate: [AuthGuard],
-  data: { role: 'MEDICO' }
-},
+
 {
   path: 'menucliente',
   component: MenuclienteComponent,
