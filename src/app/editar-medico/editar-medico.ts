@@ -33,7 +33,6 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
 })
 export class EditarMedicoComponent {
 
-  // ✅ URL BASE DEL BACKEND
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   nombreBusqueda = '';
@@ -47,6 +46,14 @@ export class EditarMedicoComponent {
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog
   ) {}
+
+  // ✅ 🔥 CLAVE GLOBAL (TOKEN)
+  getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      Authorization: `Bearer ${token}`
+    };
+  }
 
   volver() {
     this.router.navigate(['/menuadmin']);
@@ -63,7 +70,8 @@ export class EditarMedicoComponent {
   // ✅ BUSCAR
   buscar() {
     this.http.get<any[]>(
-      `${this.API}/api/medico/buscar?nombre=${this.nombreBusqueda}`
+      `${this.API}/api/medico/buscar?nombre=${this.nombreBusqueda}`,
+      { headers: this.getHeaders() } // ✅ FIX
     ).subscribe(data => {
 
       setTimeout(() => {
@@ -79,7 +87,8 @@ export class EditarMedicoComponent {
     this.medicoSeleccionado = { ...m };
 
     this.http.get<any>(
-      `${this.API}/api/usuarios/por-medico/${m.medicoId}`
+      `${this.API}/api/usuarios/por-medico/${m.medicoId}`,
+      { headers: this.getHeaders() } // ✅ FIX
     )
     .subscribe({
       next: (user) => {
@@ -100,7 +109,8 @@ export class EditarMedicoComponent {
 
     this.http.put(
       `${this.API}/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
-      this.medicoSeleccionado
+      this.medicoSeleccionado,
+      { headers: this.getHeaders() } // ✅ FIX
     ).subscribe();
 
     if (this.medicoSeleccionado.usuarioId) {
@@ -109,10 +119,11 @@ export class EditarMedicoComponent {
         {
           username: this.medicoSeleccionado.username,
           password: this.medicoSeleccionado.password
-        }
+        },
+        { headers: this.getHeaders() } // ✅ FIX
       ).subscribe(() => {
 
-        this.mostrar('✅ Médico actualizado');
+        this.mostrar('Médico actualizado');
 
         this.medicoSeleccionado = null;
         this.medicos = [];
@@ -127,7 +138,7 @@ export class EditarMedicoComponent {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
-        mensaje: '¿Seguro que deseas eliminar este médico? Esta acción no se puede deshacer.'
+        mensaje: '¿Seguro que deseas eliminar este médico?'
       }
     });
 
@@ -136,10 +147,11 @@ export class EditarMedicoComponent {
       if (result) {
 
         this.http.delete(
-          `${this.API}/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`
+          `${this.API}/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`,
+          { headers: this.getHeaders() } // ✅ FIX
         ).subscribe(() => {
 
-          this.mostrar('🗑️ Médico eliminado correctamente');
+          this.mostrar('Médico eliminado correctamente');
 
           this.medicoSeleccionado = null;
           this.medicos = [];

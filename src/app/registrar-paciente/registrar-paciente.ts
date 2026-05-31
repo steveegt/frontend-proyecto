@@ -33,7 +33,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class RegistrarPacienteComponent {
 
-  // ✅ URL BASE BACKEND (IMPORTANTE)
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   pacienteForm: FormGroup;
@@ -56,6 +55,14 @@ export class RegistrarPacienteComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  // ✅ 🔥 MÉTODO CLAVE (FALTABA)
+  getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      Authorization: `Bearer ${token}`
+    };
   }
 
   volver() {
@@ -84,7 +91,10 @@ export class RegistrarPacienteComponent {
     this.http.post(
       `${this.API}/api/pacientes/crear-con-usuario`,
       datos,
-      { responseType: 'text' }
+      {
+        headers: this.getHeaders(), // ✅ 🔥 AQUÍ ESTABA TODO EL PROBLEMA
+        responseType: 'text'
+      }
     )
     .pipe(
       catchError(error => {
@@ -94,7 +104,9 @@ export class RegistrarPacienteComponent {
           this.cdr.detectChanges();
         });
 
-        this.mostrarMensaje('❌ Error al registrar paciente');
+        console.error('Error backend:', error);
+
+        this.mostrarMensaje(error.error || 'Error al registrar paciente');
         return throwError(() => error);
       })
     )
@@ -109,7 +121,7 @@ export class RegistrarPacienteComponent {
 
         console.log('Respuesta backend:', res);
 
-        this.mostrarMensaje('✅ Paciente creado correctamente');
+        this.mostrarMensaje('Paciente creado correctamente');
       },
       error: () => {
 

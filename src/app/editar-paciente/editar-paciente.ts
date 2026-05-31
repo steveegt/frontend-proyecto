@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-editar-paciente',
@@ -29,7 +28,6 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class EditarPacienteComponent {
 
-  // ✅ URL BASE BACKEND
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   nombreBusqueda = '';
@@ -42,6 +40,14 @@ export class EditarPacienteComponent {
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
   ) {}
+
+  // ✅ 🔥 CLAVE GLOBAL (TOKEN)
+  getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      Authorization: `Bearer ${token}`
+    };
+  }
 
   volver() {
     this.router.navigate(['/menuadmin']);
@@ -58,7 +64,8 @@ export class EditarPacienteComponent {
   // ✅ BUSCAR PACIENTES
   buscar() {
     this.http.get<any[]>(
-      `${this.API}/api/pacientes/buscar?nombre=${this.nombreBusqueda}`
+      `${this.API}/api/pacientes/buscar?nombre=${this.nombreBusqueda}`,
+      { headers: this.getHeaders() } // ✅ FIX
     ).subscribe({
       next: (data) => {
         this.pacientes = data;
@@ -67,12 +74,13 @@ export class EditarPacienteComponent {
     });
   }
 
-  // ✅ SELECCIONAR PACIENTE
+  // ✅ SELECCIONAR
   seleccionar(p: any) {
     this.pacienteSeleccionado = { ...p };
 
     this.http.get<any>(
-      `${this.API}/api/usuarios/por-paciente/${p.idPaciente}`
+      `${this.API}/api/usuarios/por-paciente/${p.idPaciente}`,
+      { headers: this.getHeaders() } // ✅ FIX
     )
     .subscribe(user => {
       this.pacienteSeleccionado.username = user.username;
@@ -81,12 +89,13 @@ export class EditarPacienteComponent {
     });
   }
 
-  // ✅ GUARDAR CAMBIOS
+  // ✅ GUARDAR
   guardar() {
 
     this.http.put(
       `${this.API}/api/pacientes/actualizar/${this.pacienteSeleccionado.idPaciente}`,
-      this.pacienteSeleccionado
+      this.pacienteSeleccionado,
+      { headers: this.getHeaders() } // ✅ FIX
     ).subscribe();
 
     this.http.put(
@@ -94,10 +103,11 @@ export class EditarPacienteComponent {
       {
         username: this.pacienteSeleccionado.username,
         password: this.pacienteSeleccionado.password
-      }
+      },
+      { headers: this.getHeaders() } // ✅ FIX
     ).subscribe(() => {
 
-      this.mostrar('✅ Paciente actualizado correctamente');
+      this.mostrar('Paciente actualizado correctamente');
 
       this.pacienteSeleccionado = null;
       this.pacientes = [];
