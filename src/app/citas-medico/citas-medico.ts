@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-citas-medico',
@@ -22,7 +22,6 @@ import { RouterModule } from '@angular/router';
 })
 export class CitasMedicoComponent implements OnInit {
 
-  // ✅ URL BASE DEL BACKEND
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   citas: any[] = [];
@@ -33,16 +32,33 @@ export class CitasMedicoComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+
+    const token = localStorage.getItem('token');
+
+    // ✅ VALIDAR QUE EXISTE TOKEN
+    if (!token) {
+      this.mostrarMensaje('Sesión expirada');
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.obtenerCitas();
     this.obtenerAgendadas();
   }
 
+  // ✅ HEADERS CON TOKEN
   getHeaders() {
     const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.router.navigate(['/']);
+    }
+
     return {
       Authorization: `Bearer ${token}`
     };
@@ -66,8 +82,14 @@ export class CitasMedicoComponent implements OnInit {
         this.citas = data;
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.mostrarMensaje('❌ Error cargando citas');
+      error: (err) => {
+        console.error('Error citas:', err);
+
+        if (err.status === 401 || err.status === 403) {
+          this.cerrarSesion();
+        } else {
+          this.mostrarMensaje('❌ Error cargando citas');
+        }
       }
     });
   }
@@ -82,8 +104,14 @@ export class CitasMedicoComponent implements OnInit {
         this.citasAgendadas = data;
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.mostrarMensaje('❌ Error cargando agendadas');
+      error: (err) => {
+        console.error('Error agendadas:', err);
+
+        if (err.status === 401 || err.status === 403) {
+          this.cerrarSesion();
+        } else {
+          this.mostrarMensaje('❌ Error cargando agendadas');
+        }
       }
     });
   }
@@ -99,8 +127,14 @@ export class CitasMedicoComponent implements OnInit {
         this.obtenerAgendadas();
         this.mostrarMensaje('✅ Cita aceptada');
       },
-      error: () => {
-        this.mostrarMensaje('❌ Error al aceptar');
+      error: (err) => {
+        console.error('Error aceptar:', err);
+
+        if (err.status === 401 || err.status === 403) {
+          this.cerrarSesion();
+        } else {
+          this.mostrarMensaje('❌ Error al aceptar');
+        }
       }
     });
   }
@@ -116,9 +150,22 @@ export class CitasMedicoComponent implements OnInit {
         this.obtenerAgendadas();
         this.mostrarMensaje('❌ Cita rechazada');
       },
-      error: () => {
-        this.mostrarMensaje('❌ Error al rechazar');
+      error: (err) => {
+        console.error('Error rechazar:', err);
+
+        if (err.status === 401 || err.status === 403) {
+          this.cerrarSesion();
+        } else {
+          this.mostrarMensaje('❌ Error al rechazar');
+        }
       }
     });
+  }
+
+  // ✅ CERRAR SESIÓN AUTOMÁTICO
+  cerrarSesion() {
+    this.mostrarMensaje('Sesión expirada');
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }
