@@ -25,7 +25,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class LoginComponent {
 
-  // ✅ URL BASE (UNA SOLA VEZ)
   API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   loginForm: FormGroup;
@@ -52,9 +51,28 @@ export class LoginComponent {
     .subscribe({
       next: (res) => {
 
-        localStorage.setItem('token', res.token);
+        // 🔥 VER QUÉ DEVUELVE EL BACKEND
+        console.log("🔥 RESPUESTA BACKEND:", res);
+
+        // ✅ LIMPIAR datos viejos
+        localStorage.clear();
+
+        // 🔥 DETECTAR TOKEN (POR SI VIENE CON OTRO NOMBRE)
+        const token = res.token || res.accessToken || res.data?.token;
+
+        if (!token) {
+          alert('❌ ERROR: El backend NO está enviando token');
+          console.error("❌ TOKEN NO ENCONTRADO EN RESPUESTA:", res);
+          return;
+        }
+
+        // ✅ GUARDAR CORRECTO
+        localStorage.setItem('token', token);
         localStorage.setItem('tipoUsuario', res.tipoUsuario);
 
+        console.log("✅ TOKEN GUARDADO:", token);
+
+        // ✅ REDIRECCIÓN
         switch (res.tipoUsuario) {
           case 'PACIENTE':
             this.router.navigate(['/menucliente']);
@@ -73,7 +91,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        console.error('Error login', err);
+        console.error('❌ Error login', err);
         alert('Credenciales incorrectas');
       }
     });
