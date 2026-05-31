@@ -42,7 +42,7 @@ export class LoginComponent {
 
     if (this.loginForm.invalid) return;
 
-    // ✅ SOLO UNA PETICIÓN (CORRECTA)
+    // ✅ ÚNICA LLAMADA CORRECTA
     this.http.post<any>(
       'https://backend-proyecto-production-f013.up.railway.app/auth/login',
       this.loginForm.value
