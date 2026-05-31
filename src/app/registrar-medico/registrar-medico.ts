@@ -1,14 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
+import { Component, ChangeDetectorRef } from '@angular/core';import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
@@ -30,6 +20,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ]
 })
 export class RegistrarMedicoComponent {
+
+  // ✅ URL BASE BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   medicoForm: FormGroup;
   loading = false;
@@ -79,34 +72,46 @@ export class RegistrarMedicoComponent {
 
     const datos = this.medicoForm.value;
 
-    this.http.post(`/api/medico/crear-con-usuario`, datos)
-      .subscribe({
-        next: (res: any) => {
+    this.http.post(
+      `${this.API}/api/medico/crear-con-usuario`,
+      datos
+    )
+    .subscribe({
+      next: (res: any) => {
 
-          setTimeout(() => {
-            this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
 
-            this.mostrar(res?.mensaje || '✅ Médico creado correctamente');
+          this.mostrar(res?.mensaje || '✅ Médico creado correctamente');
 
-            this.medicoForm.reset();
+          this.medicoForm.reset();
 
-            this.cdr.detectChanges();
-          });
+          this.cdr.detectChanges();
+        });
 
-        },
-        error: (err) => {
+      },
+      error: (err) => {
 
-          console.error('Error backend:', err);
+        console.error('Error backend:', err);
 
-          setTimeout(() => {
-            this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
 
-            this.mostrar('❌ Error al registrar médico');
+          this.mostrar('❌ Error al registrar médico');
 
-            this.cdr.detectChanges();
-          });
+          this.cdr.detectChanges();
+        });
 
-        }
-      });
+      }
+    });
   }
 }
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';

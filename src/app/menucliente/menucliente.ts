@@ -13,6 +13,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MenuclienteComponent implements OnInit {
 
+  // ✅ URL BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   nombreUsuario: string = '';
   mostrarPerfil: boolean = false;
   paciente: any = null;
@@ -28,15 +31,21 @@ export class MenuclienteComponent implements OnInit {
 
       this.nombreUsuario = decoded.sub;
 
-      this.http.get<any>(`/api/pacientes/mi-perfil`)
-        .subscribe({
-          next: (res) => {
-            this.paciente = res;
-          },
-          error: (err) => {
-            console.error('Error al obtener perfil', err);
+      this.http.get<any>(
+        `${this.API}/api/pacientes/mi-perfil`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        });
+        }
+      ).subscribe({
+        next: (res) => {
+          this.paciente = res;
+        },
+        error: (err) => {
+          console.error('Error al obtener perfil', err);
+        }
+      });
     }
   }
 

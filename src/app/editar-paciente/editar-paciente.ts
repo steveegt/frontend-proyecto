@@ -29,6 +29,9 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class EditarPacienteComponent {
 
+  // ✅ URL BASE BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   nombreBusqueda = '';
   pacientes: any[] = [];
   pacienteSeleccionado: any = null;
@@ -52,9 +55,10 @@ export class EditarPacienteComponent {
     });
   }
 
+  // ✅ BUSCAR PACIENTES
   buscar() {
     this.http.get<any[]>(
-      `/api/pacientes/buscar?nombre=${this.nombreBusqueda}`
+      `${this.API}/api/pacientes/buscar?nombre=${this.nombreBusqueda}`
     ).subscribe({
       next: (data) => {
         this.pacientes = data;
@@ -63,37 +67,41 @@ export class EditarPacienteComponent {
     });
   }
 
+  // ✅ SELECCIONAR PACIENTE
   seleccionar(p: any) {
     this.pacienteSeleccionado = { ...p };
 
-    // 🔥 TRAER USUARIO
-    this.http.get<any>(`/api/usuarios/por-paciente/${p.idPaciente}`)
-      .subscribe(user => {
-        this.pacienteSeleccionado.username = user.username;
-        this.pacienteSeleccionado.password = user.password;
-        this.pacienteSeleccionado.usuarioId = user.id;
-      });
+    this.http.get<any>(
+      `${this.API}/api/usuarios/por-paciente/${p.idPaciente}`
+    )
+    .subscribe(user => {
+      this.pacienteSeleccionado.username = user.username;
+      this.pacienteSeleccionado.password = user.password;
+      this.pacienteSeleccionado.usuarioId = user.id;
+    });
   }
 
+  // ✅ GUARDAR CAMBIOS
   guardar() {
 
-    // ✅ UPDATE PACIENTE
     this.http.put(
-      `/api/pacientes/actualizar/${this.pacienteSeleccionado.idPaciente}`,
+      `${this.API}/api/pacientes/actualizar/${this.pacienteSeleccionado.idPaciente}`,
       this.pacienteSeleccionado
     ).subscribe();
 
-    // ✅ UPDATE USUARIO
     this.http.put(
-      `/api/usuarios/actualizar/${this.pacienteSeleccionado.usuarioId}`,
+      `${this.API}/api/usuarios/actualizar/${this.pacienteSeleccionado.usuarioId}`,
       {
         username: this.pacienteSeleccionado.username,
         password: this.pacienteSeleccionado.password
       }
     ).subscribe(() => {
+
       this.mostrar('✅ Paciente actualizado correctamente');
+
       this.pacienteSeleccionado = null;
       this.pacientes = [];
+
     });
   }
 }

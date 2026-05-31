@@ -39,6 +39,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class CitasComponent implements OnInit {
 
+  // ✅ URL BASE BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   citaForm: FormGroup;
   citas: any[] = [];
 
@@ -106,7 +109,7 @@ export class CitasComponent implements OnInit {
     const fechaStr = this.formatearFecha(fecha);
 
     this.http.get<string[]>(
-      `/api/citas/horarios-no-disponibles?fecha=${fechaStr}`
+      `${this.API}/api/citas/horarios-no-disponibles?fecha=${fechaStr}`
     )
     .subscribe({
       next: (data) => {
@@ -134,7 +137,7 @@ export class CitasComponent implements OnInit {
       observacion: this.citaForm.value.observacion
     };
 
-    this.http.post(`/api/citas/crear`, cita, {
+    this.http.post(`${this.API}/api/citas/crear`, cita, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -157,7 +160,7 @@ export class CitasComponent implements OnInit {
   }
 
   obtenerCitas() {
-    this.http.get<any[]>(`/api/citas/mis-citas`, {
+    this.http.get<any[]>(`${this.API}/api/citas/mis-citas`, {
       headers: this.getHeaders()
     })
     .subscribe(data => {
@@ -167,7 +170,7 @@ export class CitasComponent implements OnInit {
   }
 
   cancelar(id: number) {
-    this.http.put(`/api/citas/cancelar/${id}`, {}, {
+    this.http.put(`${this.API}/api/citas/cancelar/${id}`, {}, {
       headers: this.getHeaders()
     })
     .subscribe(() => {
@@ -183,7 +186,7 @@ export class CitasComponent implements OnInit {
 
     if (!nuevaFecha || !nuevaHora) return;
 
-    this.http.put(`/api/citas/reprogramar/${cita.id}`, {
+    this.http.put(`${this.API}/api/citas/reprogramar/${cita.id}`, {
       fecha: nuevaFecha,
       hora: nuevaHora
     }, {

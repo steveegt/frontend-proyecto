@@ -33,6 +33,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class RegistrarPacienteComponent {
 
+  // ✅ URL BASE BACKEND (IMPORTANTE)
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   pacienteForm: FormGroup;
   loading: boolean = false;
 
@@ -78,9 +81,11 @@ export class RegistrarPacienteComponent {
 
     const datos = this.pacienteForm.value;
 
-    this.http.post(`/api/pacientes/crear-con-usuario`, datos, {
-      responseType: 'text'
-    })
+    this.http.post(
+      `${this.API}/api/pacientes/crear-con-usuario`,
+      datos,
+      { responseType: 'text' }
+    )
     .pipe(
       catchError(error => {
 

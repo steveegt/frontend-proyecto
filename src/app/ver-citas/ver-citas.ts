@@ -28,6 +28,9 @@ import autoTable from 'jspdf-autotable';
 })
 export class VerCitasComponent implements OnInit {
 
+  // ✅ URL BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   nombreBusqueda = '';
   citas: any[] = [];
 
@@ -63,18 +66,17 @@ export class VerCitasComponent implements OnInit {
     };
   }
 
+  // ✅ TODAS LAS CITAS
   cargarTodas() {
     this.http.get<any[]>(
-      `/api/citas/todas`,
+      `${this.API}/api/citas/todas`,
       { headers: this.getHeaders() }
     ).subscribe({
       next: (data) => {
-
         setTimeout(() => {
           this.citas = data;
           this.cdr.detectChanges();
         });
-
       },
       error: (err) => {
         this.mostrar(err.error?.message || '❌ Error al cargar citas');
@@ -82,6 +84,7 @@ export class VerCitasComponent implements OnInit {
     });
   }
 
+  // ✅ BUSCAR
   buscar() {
 
     if (!this.nombreBusqueda) {
@@ -90,16 +93,14 @@ export class VerCitasComponent implements OnInit {
     }
 
     this.http.get<any[]>(
-      `/api/citas/buscar?nombre=${this.nombreBusqueda}`,
+      `${this.API}/api/citas/buscar?nombre=${this.nombreBusqueda}`,
       { headers: this.getHeaders() }
     ).subscribe({
       next: (data) => {
-
         setTimeout(() => {
           this.citas = data;
           this.cdr.detectChanges();
         });
-
       },
       error: (err) => {
         this.mostrar(err.error?.message || '❌ Error en la búsqueda');
@@ -107,6 +108,7 @@ export class VerCitasComponent implements OnInit {
     });
   }
 
+  // ✅ EXPORTAR PDF
   exportarPDF() {
 
     const doc = new jsPDF();
@@ -142,17 +144,14 @@ export class VerCitasComponent implements OnInit {
         head: [['Paciente', 'Médico', 'Fecha', 'Hora', 'Estado']],
         body: filas,
         theme: 'grid',
-
         headStyles: {
           fillColor: [33, 150, 243],
           textColor: 255,
           halign: 'center'
         },
-
         bodyStyles: {
           halign: 'center'
         },
-
         alternateRowStyles: {
           fillColor: [240, 240, 240]
         }

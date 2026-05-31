@@ -22,13 +22,12 @@ import { RouterModule } from '@angular/router';
 })
 export class CitasMedicoComponent implements OnInit {
 
-  // ✅ CITAS PENDIENTES
-  citas: any[] = [];
+  // ✅ URL BASE DEL BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
 
-  // ✅ CITAS AGENDADAS
+  citas: any[] = [];
   citasAgendadas: any[] = [];
 
-  // ✅ COLUMNAS
   displayedColumns: string[] = ['paciente', 'fecha', 'hora', 'estado', 'acciones'];
 
   constructor(
@@ -37,13 +36,11 @@ export class CitasMedicoComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
-  // ✅ INIT
   ngOnInit(): void {
     this.obtenerCitas();
     this.obtenerAgendadas();
   }
 
-  // ✅ HEADERS JWT
   getHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -51,7 +48,6 @@ export class CitasMedicoComponent implements OnInit {
     };
   }
 
-  // ✅ MENSAJES
   mostrarMensaje(msg: string) {
     this.snackBar.open(msg, 'Cerrar', {
       duration: 3000,
@@ -60,9 +56,9 @@ export class CitasMedicoComponent implements OnInit {
     });
   }
 
-  // ✅ OBTENER CITAS PENDIENTES
+  // ✅ PENDIENTES
   obtenerCitas() {
-    this.http.get<any[]>(`/api/citas/citas-medico`, {
+    this.http.get<any[]>(`${this.API}/api/citas/citas-medico`, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -70,16 +66,15 @@ export class CitasMedicoComponent implements OnInit {
         this.citas = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         this.mostrarMensaje('❌ Error cargando citas');
       }
     });
   }
 
-  // ✅ OBTENER CITAS AGENDADAS
+  // ✅ AGENDADAS
   obtenerAgendadas() {
-    this.http.get<any[]>(`/api/citas/citas-medico-agendadas`, {
+    this.http.get<any[]>(`${this.API}/api/citas/citas-medico-agendadas`, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -87,16 +82,15 @@ export class CitasMedicoComponent implements OnInit {
         this.citasAgendadas = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         this.mostrarMensaje('❌ Error cargando agendadas');
       }
     });
   }
 
-  // ✅ ACEPTAR CITA
+  // ✅ ACEPTAR
   aceptar(id: number) {
-    this.http.put(`/api/citas/aceptar/${id}`, {}, {
+    this.http.put(`${this.API}/api/citas/aceptar/${id}`, {}, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -111,16 +105,16 @@ export class CitasMedicoComponent implements OnInit {
     });
   }
 
-  // ✅ RECHAZAR CITA
+  // ✅ RECHAZAR
   rechazar(id: number) {
-    this.http.put(`/api/citas/rechazar/${id}`, {}, {
+    this.http.put(`${this.API}/api/citas/rechazar/${id}`, {}, {
       headers: this.getHeaders()
     })
     .subscribe({
       next: () => {
         this.obtenerCitas();
         this.obtenerAgendadas();
-        this.mostrarMensaje('❌ Cita rechazada y enviada a otro médico');
+        this.mostrarMensaje('❌ Cita rechazada');
       },
       error: () => {
         this.mostrarMensaje('❌ Error al rechazar');

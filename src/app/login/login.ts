@@ -25,6 +25,9 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class LoginComponent {
 
+  // ✅ URL BASE (UNA SOLA VEZ)
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   loginForm: FormGroup;
 
   constructor(
@@ -42,9 +45,8 @@ export class LoginComponent {
 
     if (this.loginForm.invalid) return;
 
-    // ✅ ÚNICA LLAMADA CORRECTA
     this.http.post<any>(
-      'https://backend-proyecto-production-f013.up.railway.app/auth/login',
+      `${this.API}/auth/login`,
       this.loginForm.value
     )
     .subscribe({

@@ -13,6 +13,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MenumedicoComponent implements OnInit {
 
+  // ✅ URL BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
+
   nombreUsuario: string = '';
   mostrarPerfil: boolean = false;
   medico: any = null;
@@ -28,11 +31,14 @@ export class MenumedicoComponent implements OnInit {
 
       this.nombreUsuario = decoded.sub;
 
-      this.http.get<any>(`/api/medico/mi-perfil`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      this.http.get<any>(
+        `${this.API}/api/medico/mi-perfil`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       .subscribe({
         next: (res) => {
           this.medico = res;

@@ -10,8 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
-// ✅ NUEVO IMPORT
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
 
@@ -30,10 +28,13 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
     MatFormFieldModule,
     MatCardModule,
     MatAutocompleteModule,
-    MatDialogModule 
+    MatDialogModule
   ]
 })
 export class EditarMedicoComponent {
+
+  // ✅ URL BASE DEL BACKEND
+  API = 'https://backend-proyecto-production-f013.up.railway.app';
 
   nombreBusqueda = '';
   medicos: any[] = [];
@@ -44,7 +45,7 @@ export class EditarMedicoComponent {
     private router: Router,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog 
+    private dialog: MatDialog
   ) {}
 
   volver() {
@@ -59,10 +60,10 @@ export class EditarMedicoComponent {
     });
   }
 
-  // ✅ BUSCAR MÉDICOS
+  // ✅ BUSCAR
   buscar() {
     this.http.get<any[]>(
-      `/api/medico/buscar?nombre=${this.nombreBusqueda}`
+      `${this.API}/api/medico/buscar?nombre=${this.nombreBusqueda}`
     ).subscribe(data => {
 
       setTimeout(() => {
@@ -73,36 +74,38 @@ export class EditarMedicoComponent {
     });
   }
 
-  // ✅ SELECCIONAR MÉDICO
+  // ✅ SELECCIONAR
   seleccionar(m: any) {
     this.medicoSeleccionado = { ...m };
 
-    this.http.get<any>(`/api/usuarios/por-medico/${m.medicoId}`)
-      .subscribe({
-        next: (user) => {
-          this.medicoSeleccionado.username = user.username;
-          this.medicoSeleccionado.password = user.password;
-          this.medicoSeleccionado.usuarioId = user.id;
+    this.http.get<any>(
+      `${this.API}/api/usuarios/por-medico/${m.medicoId}`
+    )
+    .subscribe({
+      next: (user) => {
+        this.medicoSeleccionado.username = user.username;
+        this.medicoSeleccionado.password = user.password;
+        this.medicoSeleccionado.usuarioId = user.id;
 
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          console.error('Usuario no encontrado');
-        }
-      });
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        console.error('Usuario no encontrado');
+      }
+    });
   }
 
   // ✅ GUARDAR
   guardar() {
 
     this.http.put(
-      `/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
+      `${this.API}/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
       this.medicoSeleccionado
     ).subscribe();
 
     if (this.medicoSeleccionado.usuarioId) {
       this.http.put(
-        `/api/usuarios/actualizar/${this.medicoSeleccionado.usuarioId}`,
+        `${this.API}/api/usuarios/actualizar/${this.medicoSeleccionado.usuarioId}`,
         {
           username: this.medicoSeleccionado.username,
           password: this.medicoSeleccionado.password
@@ -118,7 +121,7 @@ export class EditarMedicoComponent {
     }
   }
 
-  // ✅ ELIMINAR CON DIALOG BONITO
+  // ✅ ELIMINAR
   eliminar() {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -133,7 +136,7 @@ export class EditarMedicoComponent {
       if (result) {
 
         this.http.delete(
-          `/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`
+          `${this.API}/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`
         ).subscribe(() => {
 
           this.mostrar('🗑️ Médico eliminado correctamente');
