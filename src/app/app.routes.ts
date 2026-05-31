@@ -84,13 +84,13 @@ export const routes: Routes = [
   // ✅ MÉDICO 🔥 AQUÍ ESTABA EL ERROR
   // ===============================
   {
-    path: 'menu-medico',
+    path: 'menumedico',
     component: MenumedicoComponent,
     canActivate: [AuthGuard],
     data: { role: 'MEDICO' }
   },
   {
-    path: 'citas-medico',
+    path: 'citasmedico',
     component: CitasMedicoComponent,
     canActivate: [AuthGuard],
     data: { role: 'MEDICO' }
