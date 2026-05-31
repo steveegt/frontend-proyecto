@@ -6,9 +6,17 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
 
   let newReq = req;
 
-  if (req.url.startsWith('http://localhost:8080')) {
+  // ✅ si NO es https y ES localhost → reemplazar
+  if (req.url.includes('localhost')) {
     newReq = req.clone({
       url: req.url.replace('http://localhost:8080', apiUrl)
+    });
+  }
+
+  // ✅ si usas rutas relativas (/api/...)
+  else if (req.url.startsWith('/')) {
+    newReq = req.clone({
+      url: apiUrl + req.url
     });
   }
 
