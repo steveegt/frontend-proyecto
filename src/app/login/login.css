@@ -1,0 +1,64 @@
+/* RESET */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* CONTENEDOR */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* LADO IZQUIERDO (AZUL) */
+.left {
+  flex: 1;
+  background-color: #87cefa; /* azul claro */
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* LOGO */
+.logo {
+  width: 160px;
+  margin-bottom: 20px;
+}
+
+/* TEXTO */
+.titulo {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* LADO DERECHO (BLANCO) */
+.right {
+  flex: 1;
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FORMULARIO */
+.form {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CAMPOS */
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* BOTÓN */
+.btn {
+  height: 40px;
+  margin-top: 10px;
+}

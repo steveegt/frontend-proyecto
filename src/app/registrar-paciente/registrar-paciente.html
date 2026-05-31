@@ -1,0 +1,79 @@
+<!-- HEADER -->
+<mat-toolbar color="primary" class="toolbar">
+
+  <!-- ✅ BOTÓN VOLVER (CORREGIDO) -->
+  <button mat-icon-button (click)="volver()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <!-- LOGO -->
+  <img src="logo.png" class="logo">
+
+  <!-- TÍTULO -->
+  <span class="title">FARMACIAS SIMILARES</span>
+
+</mat-toolbar>
+
+<!-- CONTENIDO -->
+<div class="container">
+
+  <mat-card class="card">
+
+    <h2>Registro de Paciente</h2>
+
+    <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()">
+
+      <!-- DATOS PERSONALES -->
+      <h3>Datos personales</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="nombreCompleto">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput type="date" formControlName="fechaNacimiento">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Seguro médico</mat-label>
+        <input matInput formControlName="seguro">
+      </mat-form-field>
+
+      <!-- DATOS DE ACCESO -->
+      <h3>Datos de acceso</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password">
+      </mat-form-field>
+
+      <!-- BOTÓN -->
+      <button mat-raised-button color="primary" class="full-width" [disabled]="loading">
+
+        <span *ngIf="!loading">Registrar Paciente</span>
+        <span *ngIf="loading">Registrando...</span>
+
+      </button>
+
+    </form>
+
+  </mat-card>
+
+</div>

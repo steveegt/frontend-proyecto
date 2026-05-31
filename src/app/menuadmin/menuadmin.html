@@ -1,0 +1,56 @@
+<!-- NAVBAR -->
+<div class="navbar">
+  <img src="/logo.png" class="logo">
+
+  <div class="nav-right">
+    <span>Administrador</span>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+  </div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="contenido">
+
+  <h2>Buenos días, Steve</h2>
+
+  <div class="cards">
+
+    <!-- REGISTRAR PACIENTE -->
+    <div class="card" routerLink="/pacientes/registrar">
+      <div class="icon">👤</div>
+      <h3>Registrar Paciente</h3>
+      <p>Crear nuevos pacientes en el sistema</p>
+    </div>
+
+    <!-- EDITAR PACIENTE -->
+    <div class="card" routerLink="/editar-paciente">
+      <div class="icon">✏️</div>
+      <h3>Editar Paciente</h3>
+      <p>Modificar datos y usuario</p>
+    </div>
+
+    <!-- REGISTRAR MÉDICO -->
+    <div class="card" routerLink="/registrar-medico">
+      <div class="icon">🩺</div>
+      <h3>Registrar Médico</h3>
+      <p>Agregar médicos al sistema</p>
+    </div>
+
+    <!-- ✅ NUEVO: EDITAR MÉDICO -->
+    <div class="card" routerLink="/editar-medico">
+      <div class="icon">📝</div>
+      <h3>Editar Médico</h3>
+      <p>Modificar datos del médico y usuario</p>
+    </div>
+
+    <!-- VER CITAS -->
+    <div class="card" routerLink="/ver-citas">
+      <div class="icon">📋</div>
+      <h3>Ver todas las citas</h3>
+      <p>Administrar y filtrar citas</p>
+    </div>
+
+  </div>
+
+</div>
+``

@@ -1,0 +1,87 @@
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1976d2;
+  padding: 12px 25px;
+  color: white;
+}
+
+.logo {
+  height: 45px;
+}
+
+.btn-volver {
+  background: white;
+  color: #1976d2;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* CONTENIDO */
+.contenido {
+  padding: 30px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* BUSCADOR */
+.buscador {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+/* TABLA */
+.tabla {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background-color: #1976d2;
+  color: white;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+/* FORMULARIO */
+.formulario {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* INPUTS */
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* BOTONES */
+button {
+  margin-top: 10px;
+}
+
+/* CARD */
+mat-card {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* SEPARACIÓN TITULOS */
+h3, h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

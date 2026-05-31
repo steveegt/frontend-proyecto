@@ -1,0 +1,84 @@
+<!-- HEADER -->
+<mat-toolbar color="primary" class="toolbar">
+
+  <!-- BOTÓN VOLVER -->
+  <button mat-icon-button (click)="volver()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <!-- LOGO -->
+  <img src="logo.png" class="logo">
+
+  <!-- TÍTULO -->
+  <span class="title">FARMACIAS SIMILARES</span>
+
+</mat-toolbar>
+
+<!-- CONTENIDO -->
+<div class="container">
+
+  <mat-card class="card">
+
+    <h2>Registro de Médico</h2>
+
+    <form [formGroup]="medicoForm" (ngSubmit)="onSubmit()">
+
+      <!-- DATOS MÉDICO -->
+      <h3>Datos médicos</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="nombreCompleto">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Colegiado</mat-label>
+        <input matInput formControlName="colegiado">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Especialidad</mat-label>
+        <input matInput formControlName="especialidad">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Edad</mat-label>
+        <input matInput type="number" formControlName="edad">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observación</mat-label>
+        <input matInput formControlName="observacion">
+      </mat-form-field>
+
+      <!-- DATOS USUARIO -->
+      <h3>Datos de acceso</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password">
+      </mat-form-field>
+
+      <!-- BOTÓN -->
+      <button mat-raised-button color="primary" class="full-width" [disabled]="loading">
+
+        <span *ngIf="!loading">Registrar Médico</span>
+        <span *ngIf="loading">Registrando...</span>
+
+      </button>
+
+    </form>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,89 @@
+/* ✅ NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2196f3;
+  padding: 10px 20px;
+  color: white;
+}
+
+.logo {
+  height: 40px;
+}
+
+.acciones-navbar {
+  display: flex;
+  gap: 10px;
+}
+
+/* ✅ BOTÓN VOLVER */
+.btn-volver {
+  color: white;
+}
+
+/* ✅ BOTÓN PDF PRO */
+.btn-pdf {
+  background: #ff5722;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-pdf:hover {
+  background: #e64a19;
+  transform: scale(1.05);
+}
+
+/* ✅ BOTÓN VER TODO */
+.btn-ver-todo {
+  margin-left: 10px;
+}
+
+/* ✅ CONTENIDO */
+.contenido {
+  padding: 20px;
+}
+
+/* ✅ BUSCADOR */
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* ✅ TABLA */
+.tabla {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ✅ ESTADOS */
+.estado {
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+.estado.PENDIENTE {
+  background: orange;
+}
+
+.estado.AGENDADA {
+  background: green;
+}
+
+.estado.CANCELADA {
+  background: red;
+}
+
+/* ✅ VACÍO */
+.vacio {
+  text-align: center;
+  margin-top: 20px;
+  color: gray;
+}

@@ -1,0 +1,81 @@
+<!-- ✅ NAVBAR -->
+<div class="navbar">
+
+  <img src="/logo.png" class="logo">
+
+  <div class="acciones-navbar">
+
+    <button mat-button color="accent" class="btn-volver" (click)="volver()">
+      ← Volver
+    </button>
+
+    <button mat-raised-button class="btn-pdf" (click)="exportarPDF()">
+      📄 Exportar PDF
+    </button>
+
+  </div>
+
+</div>
+
+<div class="contenido">
+
+  <h2>📋 Todas las Citas</h2>
+
+  <!-- 🔍 BUSCADOR -->
+  <div class="buscador">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por paciente</mat-label>
+      <input matInput [(ngModel)]="nombreBusqueda">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="buscar()">
+      🔍 Buscar
+    </button>
+
+    <button mat-button class="btn-ver-todo" (click)="cargarTodas()">
+      Ver todas
+    </button>
+
+  </div>
+
+  <!-- 📊 TABLA -->
+  <table mat-table [dataSource]="citas" class="tabla" *ngIf="citas.length > 0">
+
+    <ng-container matColumnDef="paciente">
+      <th mat-header-cell *matHeaderCellDef>Paciente</th>
+      <td mat-cell *matCellDef="let c">{{ c.nombrePaciente }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="medico">
+      <th mat-header-cell *matHeaderCellDef>Médico</th>
+      <td mat-cell *matCellDef="let c">{{ c.nombreMedico }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let c">{{ c.fecha }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="hora">
+      <th mat-header-cell *matHeaderCellDef>Hora</th>
+      <td mat-cell *matCellDef="let c">{{ c.hora }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let c">
+        <span class="estado" [ngClass]="c.estado">{{ c.estado }}</span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+  </table>
+
+  <p *ngIf="citas.length === 0" class="vacio">
+    No hay citas registradas
+  </p>
+
+</div>

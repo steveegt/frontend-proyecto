@@ -1,0 +1,55 @@
+<!-- NAVBAR -->
+<div class="navbar">
+  <img src="/logo.png" class="logo">
+
+  <div class="nav-right">
+    <span>Bienvenido, {{ nombreUsuario }}</span>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+  </div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="contenido">
+
+  <h2>Panel del Cliente</h2>
+
+  <div class="cards">
+
+    <!-- MIS CITAS -->
+    <div class="card" routerLink="/citas">
+      <div class="icon">📅</div>
+      <h3>Mis Citas</h3>
+      <p>Agendar y consultar citas médicas</p>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="card perfil" (click)="abrirPerfil()">
+      <div class="icon">👤</div>
+      <h3>Mi Perfil</h3>
+      <p>Ver información personal</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL PERFIL -->
+<div class="overlay" *ngIf="mostrarPerfil">
+
+  <div class="modal">
+
+    <h2>👤 Mi Perfil</h2>
+
+    <div class="perfil-info">
+      <p><b>Nombre:</b> {{ paciente?.nombreCompleto }}</p>
+      <p><b>Fecha nacimiento:</b> {{ paciente?.fechaNacimiento }}</p>
+      <p><b>Dirección:</b> {{ paciente?.direccion }}</p>
+      <p><b>Teléfono:</b> {{ paciente?.telefono }}</p>
+      <p><b>Seguro:</b> {{ paciente?.seguro }}</p>
+    </div>
+
+    <button class="btn-cerrar" (click)="cerrarPerfil()">Cerrar</button>
+
+  </div>
+
+</div>

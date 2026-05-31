@@ -1,0 +1,75 @@
+/* NAVBAR SUPERIOR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #3498db;
+  padding: 12px 20px;
+  color: white;
+}
+
+/* LOGO */
+.logo {
+  height: 40px;
+}
+
+/* BOTÓN VOLVER */
+.btn-volver {
+  background: white;
+  color: #3498db;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* CONTENIDO GENERAL */
+.contenido {
+  padding: 20px;
+}
+
+/* FORMULARIO */
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* FORM */
+form {
+  width: 350px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* INPUTS */
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* BOTÓN CREAR */
+.btn-crear {
+  margin-top: 10px;
+}
+
+/* TABLA */
+.tabla-container {
+  margin-top: 20px;
+}
+
+.tabla {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}

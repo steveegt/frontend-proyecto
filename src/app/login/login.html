@@ -1,0 +1,40 @@
+<div class="container">
+
+  <!-- ✅ LADO IZQUIERDO -->
+  <div class="left">
+
+   <img src="/logo.png" class="logo">
+
+    <h1 class="titulo">
+      Farmacias<br>
+      Similares
+    </h1>
+
+  </div>
+
+
+  <!-- ✅ LADO DERECHO -->
+  <div class="right">
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
+
+      <h2>Iniciar Sesión</h2>
+
+      <mat-form-field class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password">
+      </mat-form-field>
+<button mat-flat-button color="primary" class="btn">
+        Ingresar
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

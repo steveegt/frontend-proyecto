@@ -1,0 +1,115 @@
+<!-- NAVBAR -->
+<div class="navbar">
+  <img src="/logo.png" class="logo">
+
+  <button class="btn-volver" routerLink="/menucliente">
+    ← Volver
+  </button>
+</div>
+
+<div class="contenido">
+
+  <mat-tab-group>
+
+    <!-- CREAR -->
+    <mat-tab label="Crear Cita">
+
+      <div class="form-container">
+
+        <form [formGroup]="citaForm">
+
+          <h2>Agendar Cita</h2>
+
+          <!-- FECHA -->
+          <mat-form-field class="full-width">
+            <mat-label>Fecha</mat-label>
+            <input matInput
+                   [matDatepicker]="picker"
+                   [matDatepickerFilter]="filtroFechas"
+                   formControlName="fecha">
+
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- ✅ HORAS BLOQUEADAS -->
+          <mat-form-field class="full-width">
+            <mat-label>Hora</mat-label>
+            <mat-select formControlName="hora">
+
+              <mat-option
+                *ngFor="let h of horarios"
+                [value]="h"
+                [disabled]="horariosOcupados.includes(h)">
+
+                {{ h }}
+                <span *ngIf="horariosOcupados.includes(h)">
+                  (Ocupado)
+                </span>
+
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+
+          <!-- OBS -->
+          <mat-form-field class="full-width">
+            <mat-label>Observación</mat-label>
+            <input matInput formControlName="observacion">
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" (click)="crearCita()">
+            Crear
+          </button>
+
+        </form>
+
+      </div>
+
+    </mat-tab>
+
+    <!-- LISTA -->
+    <mat-tab label="Mis Citas">
+
+      <table mat-table [dataSource]="citas" class="tabla">
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let c">{{ c.fecha }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="hora">
+          <th mat-header-cell *matHeaderCellDef>Hora</th>
+          <td mat-cell *matCellDef="let c">{{ c.hora }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let c">{{ c.estado }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let c">
+
+            <button mat-button color="warn" (click)="cancelar(c.id)">
+              Cancelar
+            </button>
+
+            <button mat-button color="primary" (click)="reprogramar(c)">
+              Reprogramar
+            </button>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

@@ -1,0 +1,58 @@
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1976d2;
+  color: white;
+  padding: 10px 20px;
+}
+
+.logo {
+  height: 40px;
+}
+
+.btn-volver {
+  background: white;
+  color: #1976d2;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* CONTENIDO */
+.contenido {
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* TABLA */
+.tabla-container {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background: #1976d2;
+  color: white;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+/* BOTONES */
+button {
+  margin: 5px;
+}

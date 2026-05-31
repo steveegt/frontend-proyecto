@@ -1,0 +1,45 @@
+/* HEADER */
+.toolbar {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+    margin: 0 15px;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* CONTENEDOR */
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* CARD */
+.card {
+    width: 400px;
+    padding: 20px;
+}
+
+/* INPUTS */
+.full-width {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* MENSAJES */
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.success {
+    color: green;
+    margin-bottom: 10px;
+}
