@@ -6,7 +6,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-# ✅ AQUÍ ESTÁ EL FIX REAL
-COPY --from=build /app/dist/FrontEnd_Proyecto /usr/share/nginx/html
+# ✅ copiar TODO lo que haya en dist
+COPY --from=build /app/dist/ /usr/share/nginx/html/
 
 EXPOSE 80
