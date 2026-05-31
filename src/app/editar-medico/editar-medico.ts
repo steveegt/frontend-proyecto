@@ -62,7 +62,7 @@ export class EditarMedicoComponent {
   // ✅ BUSCAR MÉDICOS
   buscar() {
     this.http.get<any[]>(
-      `http://localhost:8080/api/medico/buscar?nombre=${this.nombreBusqueda}`
+      `/api/medico/buscar?nombre=${this.nombreBusqueda}`
     ).subscribe(data => {
 
       setTimeout(() => {
@@ -77,7 +77,7 @@ export class EditarMedicoComponent {
   seleccionar(m: any) {
     this.medicoSeleccionado = { ...m };
 
-    this.http.get<any>(`http://localhost:8080/api/usuarios/por-medico/${m.medicoId}`)
+    this.http.get<any>(`/api/usuarios/por-medico/${m.medicoId}`)
       .subscribe({
         next: (user) => {
           this.medicoSeleccionado.username = user.username;
@@ -96,13 +96,13 @@ export class EditarMedicoComponent {
   guardar() {
 
     this.http.put(
-      `http://localhost:8080/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
+      `/api/medico/actualizar/${this.medicoSeleccionado.medicoId}`,
       this.medicoSeleccionado
     ).subscribe();
 
     if (this.medicoSeleccionado.usuarioId) {
       this.http.put(
-        `http://localhost:8080/api/usuarios/actualizar/${this.medicoSeleccionado.usuarioId}`,
+        `/api/usuarios/actualizar/${this.medicoSeleccionado.usuarioId}`,
         {
           username: this.medicoSeleccionado.username,
           password: this.medicoSeleccionado.password
@@ -133,7 +133,7 @@ export class EditarMedicoComponent {
       if (result) {
 
         this.http.delete(
-          `http://localhost:8080/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`
+          `/api/medico/eliminar/${this.medicoSeleccionado.medicoId}`
         ).subscribe(() => {
 
           this.mostrar('🗑️ Médico eliminado correctamente');

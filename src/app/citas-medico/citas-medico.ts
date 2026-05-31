@@ -37,9 +37,10 @@ export class CitasMedicoComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
+  // ✅ INIT
   ngOnInit(): void {
     this.obtenerCitas();
-    this.obtenerAgendadas(); // ✅ NUEVO
+    this.obtenerAgendadas();
   }
 
   // ✅ HEADERS JWT
@@ -59,9 +60,9 @@ export class CitasMedicoComponent implements OnInit {
     });
   }
 
-  // ✅ CITAS PENDIENTES
+  // ✅ OBTENER CITAS PENDIENTES
   obtenerCitas() {
-    this.http.get<any[]>('http://localhost:8080/api/citas/citas-medico', {
+    this.http.get<any[]>(`/api/citas/citas-medico`, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -69,13 +70,16 @@ export class CitasMedicoComponent implements OnInit {
         this.citas = data;
         this.cdr.detectChanges();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.mostrarMensaje('❌ Error cargando citas');
+      }
     });
   }
 
-  // ✅ CITAS AGENDADAS
+  // ✅ OBTENER CITAS AGENDADAS
   obtenerAgendadas() {
-    this.http.get<any[]>('http://localhost:8080/api/citas/citas-medico-agendadas', {
+    this.http.get<any[]>(`/api/citas/citas-medico-agendadas`, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -83,31 +87,44 @@ export class CitasMedicoComponent implements OnInit {
         this.citasAgendadas = data;
         this.cdr.detectChanges();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+        this.mostrarMensaje('❌ Error cargando agendadas');
+      }
     });
   }
 
-  // ✅ ACEPTAR
+  // ✅ ACEPTAR CITA
   aceptar(id: number) {
-    this.http.put(`http://localhost:8080/api/citas/aceptar/${id}`, {}, {
+    this.http.put(`/api/citas/aceptar/${id}`, {}, {
       headers: this.getHeaders()
     })
-    .subscribe(() => {
-      this.obtenerCitas();
-      this.obtenerAgendadas(); // ✅ refresca ambas listas
-      this.mostrarMensaje('✅ Cita aceptada');
+    .subscribe({
+      next: () => {
+        this.obtenerCitas();
+        this.obtenerAgendadas();
+        this.mostrarMensaje('✅ Cita aceptada');
+      },
+      error: () => {
+        this.mostrarMensaje('❌ Error al aceptar');
+      }
     });
   }
 
-  // ✅ RECHAZAR
+  // ✅ RECHAZAR CITA
   rechazar(id: number) {
-    this.http.put(`http://localhost:8080/api/citas/rechazar/${id}`, {}, {
+    this.http.put(`/api/citas/rechazar/${id}`, {}, {
       headers: this.getHeaders()
     })
-    .subscribe(() => {
-      this.obtenerCitas();
-      this.obtenerAgendadas(); // ✅ refresca ambas listas
-      this.mostrarMensaje('❌ Cita rechazada y enviada a otro médico');
+    .subscribe({
+      next: () => {
+        this.obtenerCitas();
+        this.obtenerAgendadas();
+        this.mostrarMensaje('❌ Cita rechazada y enviada a otro médico');
+      },
+      error: () => {
+        this.mostrarMensaje('❌ Error al rechazar');
+      }
     });
   }
 }

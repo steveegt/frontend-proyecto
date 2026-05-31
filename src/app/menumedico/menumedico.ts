@@ -26,11 +26,9 @@ export class MenumedicoComponent implements OnInit {
     if (token) {
       const decoded: any = jwtDecode(token);
 
-      // ✅ username del token
       this.nombreUsuario = decoded.sub;
 
-      // ✅ traer perfil del médico
-      this.http.get<any>('http://localhost:8080/api/medico/mi-perfil', {
+      this.http.get<any>(`/api/medico/mi-perfil`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -59,4 +57,3 @@ export class MenumedicoComponent implements OnInit {
     this.router.navigate(['/']);
   }
 }
-``

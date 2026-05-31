@@ -56,12 +56,10 @@ export class RegistrarMedicoComponent {
     });
   }
 
-  // ✅ VOLVER
   volver() {
     this.router.navigate(['/menuadmin']);
   }
 
-  // ✅ MENSAJE FLOTANTE
   mostrar(msg: string) {
     this.snackBar.open(msg, 'Cerrar', {
       duration: 3000,
@@ -70,7 +68,6 @@ export class RegistrarMedicoComponent {
     });
   }
 
-  // ✅ REGISTRAR MÉDICO
   onSubmit() {
 
     if (this.medicoForm.invalid) {
@@ -82,14 +79,13 @@ export class RegistrarMedicoComponent {
 
     const datos = this.medicoForm.value;
 
-    this.http.post('http://localhost:8080/api/medico/crear-con-usuario', datos)
+    this.http.post(`/api/medico/crear-con-usuario`, datos)
       .subscribe({
         next: (res: any) => {
 
           setTimeout(() => {
             this.loading = false;
 
-            // ✅ usa mensaje real del backend
             this.mostrar(res?.mensaje || '✅ Médico creado correctamente');
 
             this.medicoForm.reset();

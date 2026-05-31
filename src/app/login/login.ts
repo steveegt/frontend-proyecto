@@ -34,7 +34,6 @@ export class LoginComponent {
     private router: Router
   ) {
 
-    // ✅ FORM
     this.loginForm = this.fb.group({
       username: [''],
       password: ['']
@@ -44,40 +43,37 @@ export class LoginComponent {
 
   login() {
 
-  if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) return;
 
-  this.http.post<any>('http://localhost:8080/auth/login', this.loginForm.value)
-    .subscribe({
-      next: (res) => {
+    this.http.post<any>('/auth/login', this.loginForm.value)
+      .subscribe({
+        next: (res) => {
 
-        // ✅ guardar token
-        localStorage.setItem('token', res.token);
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('tipoUsuario', res.tipoUsuario);
 
-        // 🔥 ✅ CORREGIDO (clave correcta)
-        localStorage.setItem('tipoUsuario', res.tipoUsuario);
+          switch (res.tipoUsuario) {
 
-        // ✅ redirección por rol
-        switch (res.tipoUsuario) {
+            case 'PACIENTE':
+              this.router.navigate(['/menucliente']);
+              break;
 
-          case 'PACIENTE':
-            this.router.navigate(['/menucliente']);
-            break;
+            case 'MEDICO':
+              this.router.navigate(['/menumedico']);
+              break;
 
-          case 'MEDICO':
-            this.router.navigate(['/menumedico']);
-            break;
+            case 'ADMIN':
+              this.router.navigate(['/menuadmin']);
+              break;
 
-          case 'ADMIN':
-            this.router.navigate(['/menuadmin']);
-            break;
-
-          default:
-            this.router.navigate(['/']);
+            default:
+              this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          console.error('Error login', err);
+          alert('Credenciales incorrectas');
         }
-      },
-      error: (err) => {
-        console.error('Error login', err);
-        alert('Credenciales incorrectas');
-      }
-    });
-}}
+      });
+  }
+}

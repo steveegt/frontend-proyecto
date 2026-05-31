@@ -56,7 +56,6 @@ export class VerCitasComponent implements OnInit {
     });
   }
 
-  // ✅ HEADER CON TOKEN
   getHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -64,10 +63,9 @@ export class VerCitasComponent implements OnInit {
     };
   }
 
-  // ✅ CARGAR TODAS
   cargarTodas() {
     this.http.get<any[]>(
-      'http://localhost:8080/api/citas/todas',
+      `/api/citas/todas`,
       { headers: this.getHeaders() }
     ).subscribe({
       next: (data) => {
@@ -84,7 +82,6 @@ export class VerCitasComponent implements OnInit {
     });
   }
 
-  // ✅ BUSCAR
   buscar() {
 
     if (!this.nombreBusqueda) {
@@ -93,7 +90,7 @@ export class VerCitasComponent implements OnInit {
     }
 
     this.http.get<any[]>(
-      `http://localhost:8080/api/citas/buscar?nombre=${this.nombreBusqueda}`,
+      `/api/citas/buscar?nombre=${this.nombreBusqueda}`,
       { headers: this.getHeaders() }
     ).subscribe({
       next: (data) => {
@@ -110,7 +107,6 @@ export class VerCitasComponent implements OnInit {
     });
   }
 
-  // ✅ EXPORTAR PDF PROFESIONAL
   exportarPDF() {
 
     const doc = new jsPDF();
@@ -120,24 +116,19 @@ export class VerCitasComponent implements OnInit {
 
     logo.onload = () => {
 
-      // ✅ HEADER AZUL
       doc.setFillColor(33, 150, 243);
       doc.rect(0, 0, 210, 30, 'F');
 
-      // ✅ LOGO
       doc.addImage(logo, 'PNG', 10, 5, 20, 20);
 
-      // ✅ TÍTULO
       doc.setFontSize(18);
       doc.setTextColor(255, 255, 255);
       doc.text('REPORTE DE CITAS', 105, 18, { align: 'center' });
 
-      // ✅ FECHA
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(10);
       doc.text(`Generado: ${new Date().toLocaleString()}`, 14, 40);
 
-      // ✅ DATOS
       const filas = this.citas.map(c => [
         c.nombrePaciente,
         c.nombreMedico,
@@ -170,7 +161,6 @@ export class VerCitasComponent implements OnInit {
       doc.save('reporte-citas.pdf');
     };
 
-    // ✅ fallback si falla logo
     logo.onerror = () => {
       this.mostrar('⚠️ No se pudo cargar el logo, generando PDF simple...');
 

@@ -101,13 +101,12 @@ export class CitasComponent implements OnInit {
     return dia !== 0 && dia !== 6 && fecha >= hoy;
   };
 
-  // ✅ NUEVO ENDPOINT (CORREGIDO)
   cargarHorariosOcupados(fecha: Date) {
 
     const fechaStr = this.formatearFecha(fecha);
 
     this.http.get<string[]>(
-      `http://localhost:8080/api/citas/horarios-no-disponibles?fecha=${fechaStr}`
+      `/api/citas/horarios-no-disponibles?fecha=${fechaStr}`
     )
     .subscribe({
       next: (data) => {
@@ -135,7 +134,7 @@ export class CitasComponent implements OnInit {
       observacion: this.citaForm.value.observacion
     };
 
-    this.http.post('http://localhost:8080/api/citas/crear', cita, {
+    this.http.post(`/api/citas/crear`, cita, {
       headers: this.getHeaders()
     })
     .subscribe({
@@ -145,7 +144,7 @@ export class CitasComponent implements OnInit {
         this.mostrarMensaje('✅ Cita creada');
       },
       error: (err) => {
-  this.mostrarMensaje(err.error?.message || '❌ Sin disponibilidad');
+        this.mostrarMensaje(err.error?.message || '❌ Sin disponibilidad');
       }
     });
   }
@@ -158,7 +157,7 @@ export class CitasComponent implements OnInit {
   }
 
   obtenerCitas() {
-    this.http.get<any[]>('http://localhost:8080/api/citas/mis-citas', {
+    this.http.get<any[]>(`/api/citas/mis-citas`, {
       headers: this.getHeaders()
     })
     .subscribe(data => {
@@ -168,7 +167,7 @@ export class CitasComponent implements OnInit {
   }
 
   cancelar(id: number) {
-    this.http.put(`http://localhost:8080/api/citas/cancelar/${id}`, {}, {
+    this.http.put(`/api/citas/cancelar/${id}`, {}, {
       headers: this.getHeaders()
     })
     .subscribe(() => {
@@ -184,7 +183,7 @@ export class CitasComponent implements OnInit {
 
     if (!nuevaFecha || !nuevaHora) return;
 
-    this.http.put(`http://localhost:8080/api/citas/reprogramar/${cita.id}`, {
+    this.http.put(`/api/citas/reprogramar/${cita.id}`, {
       fecha: nuevaFecha,
       hora: nuevaHora
     }, {

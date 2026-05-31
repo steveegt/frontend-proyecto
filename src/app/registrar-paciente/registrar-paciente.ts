@@ -78,8 +78,8 @@ export class RegistrarPacienteComponent {
 
     const datos = this.pacienteForm.value;
 
-    this.http.post('http://localhost:8080/api/pacientes/crear-con-usuario', datos, {
-      responseType: 'text'  // CLAVE para evitar error falso
+    this.http.post(`/api/pacientes/crear-con-usuario`, datos, {
+      responseType: 'text'
     })
     .pipe(
       catchError(error => {

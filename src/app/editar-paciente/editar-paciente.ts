@@ -11,7 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-editar-paciente',
   standalone: true,
@@ -38,7 +37,7 @@ export class EditarPacienteComponent {
     private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar,
-      private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   volver() {
@@ -53,23 +52,22 @@ export class EditarPacienteComponent {
     });
   }
 
- buscar() {
-  this.http.get<any[]>(
-    `http://localhost:8080/api/pacientes/buscar?nombre=${this.nombreBusqueda}`
-  ).subscribe({
-    next: (data) => {
-      this.pacientes = data;
-
-      this.cdr.detectChanges(); 
-    }
-  });
-}
+  buscar() {
+    this.http.get<any[]>(
+      `/api/pacientes/buscar?nombre=${this.nombreBusqueda}`
+    ).subscribe({
+      next: (data) => {
+        this.pacientes = data;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   seleccionar(p: any) {
     this.pacienteSeleccionado = { ...p };
 
     // 🔥 TRAER USUARIO
-    this.http.get<any>(`http://localhost:8080/api/usuarios/por-paciente/${p.idPaciente}`)
+    this.http.get<any>(`/api/usuarios/por-paciente/${p.idPaciente}`)
       .subscribe(user => {
         this.pacienteSeleccionado.username = user.username;
         this.pacienteSeleccionado.password = user.password;
@@ -81,13 +79,13 @@ export class EditarPacienteComponent {
 
     // ✅ UPDATE PACIENTE
     this.http.put(
-      `http://localhost:8080/api/pacientes/actualizar/${this.pacienteSeleccionado.idPaciente}`,
+      `/api/pacientes/actualizar/${this.pacienteSeleccionado.idPaciente}`,
       this.pacienteSeleccionado
     ).subscribe();
 
     // ✅ UPDATE USUARIO
     this.http.put(
-      `http://localhost:8080/api/usuarios/actualizar/${this.pacienteSeleccionado.usuarioId}`,
+      `/api/usuarios/actualizar/${this.pacienteSeleccionado.usuarioId}`,
       {
         username: this.pacienteSeleccionado.username,
         password: this.pacienteSeleccionado.password

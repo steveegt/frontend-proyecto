@@ -17,7 +17,6 @@ export class MenuclienteComponent implements OnInit {
   mostrarPerfil: boolean = false;
   paciente: any = null;
 
-  // ✅ CORREGIDO (tenías "constructorconstructor")
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -27,11 +26,9 @@ export class MenuclienteComponent implements OnInit {
     if (token) {
       const decoded: any = jwtDecode(token);
 
-      // ✅ USERNAME DEL TOKEN
       this.nombreUsuario = decoded.sub;
 
-      // ✅ TRAER PERFIL DEL PACIENTE
-      this.http.get<any>('http://localhost:8080/api/pacientes/mi-perfil')
+      this.http.get<any>(`/api/pacientes/mi-perfil`)
         .subscribe({
           next: (res) => {
             this.paciente = res;
@@ -51,7 +48,6 @@ export class MenuclienteComponent implements OnInit {
     this.mostrarPerfil = false;
   }
 
-  // ✅ NUEVO: LOGOUT
   logout() {
     localStorage.clear();
     this.router.navigate(['/']);
